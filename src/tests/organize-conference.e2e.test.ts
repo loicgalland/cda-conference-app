@@ -1,9 +1,9 @@
 import request from 'supertest';
 import app from "../infrastructure/express_api/app";
 import {addDays, addHours} from "date-fns";
-import {User} from "../entities/user.entity";
-import {InMemoryUsersRepository} from "../adapters/in-memory-user-repository";
-import {BasicAuthenticator} from "../services/basic-authenticator";
+import {User} from "../user/entities/user.entity";
+import {InMemoryUsersRepository} from "../user/adapters/in-memory-user-repository";
+import {BasicAuthenticator} from "../user/services/basic-authenticator";
 
 
 describe('Feature: Organize conference', () => {

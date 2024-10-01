@@ -1,5 +1,5 @@
 import {IUserRepository} from "../ports/user-repository.interface";
-import {User} from "../entities/user.entity";
+import {User} from "../../user/entities/user.entity";
 
 export class InMemoryUsersRepository implements IUserRepository {
     private users: User[] = []

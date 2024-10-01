@@ -1,9 +1,8 @@
 import {IConferenceRepository} from "../ports/conference-repository.interface";
 import {Conference} from "../entities/conference.entity";
-import {IIdGenerator} from "../ports/id-generator.interface";
-import {IDateGenerator} from "../ports/date-generator.interface";
-import {differenceInDays} from "date-fns";
-import {User} from "../entities/user.entity";
+import {IIdGenerator} from "../../core/ports/id-generator.interface";
+import {IDateGenerator} from "../../core/ports/date-generator.interface";
+import {User} from "../../user/entities/user.entity";
 
 
 export class OrganizeConference {

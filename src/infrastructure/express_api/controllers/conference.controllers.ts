@@ -1,9 +1,9 @@
-import {RandomIdGenerator} from "../../../adapters/random-id-generator";
-import {CurrentDateGenerator} from "../../../adapters/current-date-generator";
-import {InMemoryConferenceRespository} from "../../../adapters/in-memory-conference-repository";
-import {OrganizeConference} from "../../../usecases/organize-conference";
+import {RandomIdGenerator} from "../../../core/adapters/random-id-generator";
+import {CurrentDateGenerator} from "../../../core/adapters/current-date-generator";
+import {InMemoryConferenceRespository} from "../../../conference/adapters/in-memory-conference-repository";
+import {OrganizeConference} from "../../../conference/usecases/organize-conference";
 import {NextFunction, Request, Response} from "express";
-import {User} from "../../../entities/user.entity";
+import {User} from "../../../user/entities/user.entity";
 import {CreateConferenceInput} from "../../dto/conference.dto";
 import {ValidatorRequest} from "../../../infrastructure/express_api/utils/validate-request";
 

@@ -1,5 +1,5 @@
 import {IAuthenticator} from "../ports/authenticator.interface";
-import {User} from "../entities/user.entity";
+import {User} from "../../user/entities/user.entity";
 import {IUserRepository} from "../ports/user-repository.interface";
 
 export class BasicAuthenticator implements IAuthenticator {

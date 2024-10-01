@@ -1,5 +1,5 @@
-import {BasicAuthenticator} from "../../../services/basic-authenticator";
-import {InMemoryUsersRepository} from "../../../adapters/in-memory-user-repository";
+import {BasicAuthenticator} from "../../../user/services/basic-authenticator";
+import {InMemoryUsersRepository} from "../../../user/adapters/in-memory-user-repository";
 import {NextFunction, Request, Response} from "express";
 import {extractToken} from "../../../infrastructure/express_api/utils/extract-token";
 

@@ -1,6 +1,6 @@
 import {BasicAuthenticator} from "./basic-authenticator";
 import {InMemoryUsersRepository} from "../adapters/in-memory-user-repository";
-import {User} from "../entities/user.entity";
+import {User} from "../../user/entities/user.entity";
 
 describe("Authentication", () => {
     let repository: InMemoryUsersRepository;
