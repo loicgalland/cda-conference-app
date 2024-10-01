@@ -5,6 +5,7 @@ import {OrganizeConference} from "../../../usecases/organize-conference";
 import {NextFunction, Request, Response} from "express";
 import {User} from "../../../entities/user.entity";
 import {CreateConferenceInput} from "../../dto/conference.dto";
+import {ValidatorRequest} from "../../../infrastructure/express_api/utils/validate-request";
 
 const idGenerator = new RandomIdGenerator();
 const currentDateGenerator = new CurrentDateGenerator();
@@ -15,13 +16,20 @@ const userCase = new OrganizeConference(repository, idGenerator, currentDateGene
 
 export const organizeConference = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { title, seats, startDate, endDate } = req.body as CreateConferenceInput;
+        const body = req.body as CreateConferenceInput;
+
+        const {errors, input} = await ValidatorRequest(CreateConferenceInput, body);
+
+        if(errors) {
+            return res.status(400).json({errors})
+        };
+
         const result = await userCase.execute({
             user: new User({ id: 'john-doe' }),
-            title,
-            startDate: new Date(startDate),
-            endDate: new Date(endDate),
-            seats,
+            title: input.title,
+            startDate: new Date(input.startDate),
+            endDate: new Date(input.endDate),
+            seats: input.seats,
         });
         return res.status(201).json(result);
     } catch (error) {
