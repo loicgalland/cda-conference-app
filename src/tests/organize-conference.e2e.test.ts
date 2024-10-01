@@ -15,6 +15,6 @@ describe('Feature: Organize conference', () => {
             });
 
         expect(result.status).toBe(201);
-        expect(result.body).toEqual({id: expect.any(String)});
+        expect(result.body.data).toEqual({id: expect.any(String)});
     })
 })

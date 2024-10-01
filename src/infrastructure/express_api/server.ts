@@ -1,10 +1,10 @@
 import expressApp from './app';
-import * as process from "node:process";
 
 const PORT = process.env.PORT || 8000;
 
 export const StartServer = async() => {
     expressApp.listen(PORT, () => {
+        console.clear()
         console.log(`✅Server is running on port ${PORT}`)
     })
 
