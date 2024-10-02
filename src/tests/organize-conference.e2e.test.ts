@@ -4,6 +4,7 @@ import {addDays, addHours} from "date-fns";
 import {User} from "../user/entities/user.entity";
 import {InMemoryUsersRepository} from "../user/adapters/in-memory-user-repository";
 import {BasicAuthenticator} from "../user/services/basic-authenticator";
+import container from "../infrastructure/express_api/config/dependency-injection";
 
 
 describe('Feature: Organize conference', () => {
@@ -16,13 +17,12 @@ describe('Feature: Organize conference', () => {
     let repository: InMemoryUsersRepository
 
     beforeEach(async() => {
-        repository = new InMemoryUsersRepository()
+        repository = container.resolve('userRepository');
         await repository.create(johnDoe)
     })
 
     it('Should organize a conference', async () => {
         const token = Buffer.from(`${johnDoe.props.emailAddress}:${johnDoe.props.password}`).toString('base64')
-        jest.spyOn(BasicAuthenticator.prototype, 'authenticate').mockResolvedValue(johnDoe)
         const result = await request(app)
             .post('/conference')
             .set('Authorization', `Basic ${token}`)
