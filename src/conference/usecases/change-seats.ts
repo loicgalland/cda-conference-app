@@ -1,5 +1,6 @@
 import {User} from "../../user/entities/user.entity";
 import {IConferenceRepository} from "../../conference/ports/conference-repository.interface";
+import {Executable} from "../../core/executable.interface";
 
 type RequestChangeSeats = {
     user: User,
@@ -9,10 +10,10 @@ type RequestChangeSeats = {
 type ResponseChangeSeats = void
 
 
-export class ChangeSeats {
+export class ChangeSeats implements Executable<RequestChangeSeats, ResponseChangeSeats> {
     constructor(private readonly repository: IConferenceRepository) {}
 
-    async execute({user, conferenceId, seats}: RequestChangeSeats): Promise<ResponseChangeSeats> {
+    async execute({user, conferenceId, seats}){
         const conference = await this.repository.findById(conferenceId);
 
         if(!conference) throw new Error('Conference not found');

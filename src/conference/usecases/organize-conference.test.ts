@@ -5,6 +5,7 @@ import {Conference} from "../entities/conference.entity";
 import {FixedDateGenerator} from "../../core/adapters/fixed-date-generator";
 import {User} from "../../user/entities/user.entity";
 
+
 describe('Feature organize conference', () => {
     function expectConferenceToEqual(conference: Conference) {
         expect(conference.props).toEqual({

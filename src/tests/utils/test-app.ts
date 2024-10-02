@@ -2,7 +2,7 @@ import express from "express";
 import {jsonResponseMiddleware} from "../.././infrastructure/express_api/middlewares/json-response.middleware";
 import conferenceRoutes from "../../infrastructure/express_api/routes/conference.route";
 import {errorHandler} from "../../infrastructure/express_api/middlewares/error-handler.middleware";
-import {IFixture} from "../../tests/utils/fixture.interface";
+import {IFixture} from "../fixtures/fixture.interface";
 import {AwilixContainer} from "awilix";
 import container from "../../infrastructure/express_api/config/dependency-injection";
 

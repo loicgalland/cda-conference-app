@@ -1,4 +1,4 @@
-import {UserFixture} from "../../tests/utils/user-fixture";
+import {UserFixture} from "../fixtures/user-fixture";
 import {User} from "../../user/entities/user.entity";
 
 

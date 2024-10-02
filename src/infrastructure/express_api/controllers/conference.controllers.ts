@@ -1,8 +1,9 @@
 import {NextFunction, Request, Response} from "express";
 import {User} from "../../../user/entities/user.entity";
 import {ValidatorRequest} from "../../../infrastructure/express_api/utils/validate-request";
-import {CreateConferenceInput} from "../../../infrastructure/express_api/dto/conference.dto";
+import {ChangeSeatsInput, CreateConferenceInput} from "../../../infrastructure/express_api/dto/conference.dto";
 import {AwilixContainer} from "awilix";
+import {ChangeSeats} from "../../../conference/usecases/change-seats";
 
 
 export const organizeConference = (container: AwilixContainer) => {
@@ -28,4 +29,28 @@ export const organizeConference = (container: AwilixContainer) => {
             next(error);
         }
     };
+}
+
+export const changeSeats = (container: AwilixContainer) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {id} = req.params;
+            const body = req.body as ChangeSeats;
+
+            const {errors, input} = await ValidatorRequest(ChangeSeatsInput, body)
+
+            if(errors) res.jsonError(errors, 400)
+
+            await container.resolve('changeSeats').execute({
+                user: req.user,
+                conferenceId: id,
+                seats: input.seats,
+            })
+
+            return res.jsonSuccess({message: 'The number of seats was changed correctly'}, 200)
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }
