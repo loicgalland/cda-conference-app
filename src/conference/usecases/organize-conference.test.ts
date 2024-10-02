@@ -17,7 +17,11 @@ describe('Feature organize conference', () => {
         });
     }
 
-    const jonhDoe = new User({id: "john-doe"})
+    const jonhDoe = new User({
+        id: "john-doe",
+        emailAddress: "john-doe@gmail.com",
+        password: "azerty",
+    })
 
     let repository: InMemoryConferenceRespository;
     let idGenerator: FixedIdGenerator;
