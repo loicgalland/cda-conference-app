@@ -9,6 +9,7 @@ import {IUserRepository} from "../../../user/ports/user-repository.interface";
 import {IDateGenerator} from "../../../core/ports/date-generator.interface";
 import {IIdGenerator} from "../../../core/ports/id-generator.interface";
 import {IConferenceRepository} from "../../../conference/ports/conference-repository.interface";
+import {ChangeSeats} from "../../../conference/usecases/change-seats";
 
 const container = createContainer();
 
@@ -25,9 +26,10 @@ const dateGenerator = container.resolve('dateGenerator') as IDateGenerator
 const userRepository = container.resolve('userRepository') as IUserRepository
 
 container.register({
-    organizeConferenceUsecase: asValue(new OrganizeConference(
+    organizeConference: asValue(new OrganizeConference(
         conferenceRepository, idGenerator, dateGenerator
     )),
+    changeSeat: asValue(new ChangeSeats(conferenceRepository)),
     authenticator: asValue(new BasicAuthenticator(userRepository))
 })
 

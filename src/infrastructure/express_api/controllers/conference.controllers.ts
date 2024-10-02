@@ -16,7 +16,7 @@ export const organizeConference = (container: AwilixContainer) => {
                 return res.jsonError(errors, 400)
             };
 
-            const result = await container.resolve('organizeConferenceUsecase').execute({
+            const result = await container.resolve('organizeConference').execute({
                 user: req.user as User,
                 title: input.title,
                 startDate: new Date(input.startDate),
