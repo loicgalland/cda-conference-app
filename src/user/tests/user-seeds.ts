@@ -11,5 +11,10 @@ export const testUser = {
         id: "bod",
         emailAddress: "bob@gmail.com",
         password: "azety"
+    }),
+    alice: new User({
+        id: "alice",
+        emailAddress: "alice@gmail.com",
+        password: "azety"
     })
 }

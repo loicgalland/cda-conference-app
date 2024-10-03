@@ -4,6 +4,10 @@ import {addDays, addHours} from "date-fns";
 import {InMemoryConferenceRespository} from "../../conference/adapters/in-memory-conference-repository";
 import {ChangeDates} from "../../conference/usecases/change-date";
 import {FixedDateGenerator} from "../../core/adapters/fixed-date-generator";
+import {InMemoryBookingRepository} from "../../conference/adapters/in-memory-booking-repository";
+import {InMemoryMailer} from "../../core/adapters/in-memory-mailer";
+import {InMemoryUsersRepository} from "../../user/adapters/in-memory-user-repository";
+import {testBooking} from "../../conference/tests/booking-seeds";
 
 
 describe('Feature: Change date conference', () => {
@@ -16,14 +20,31 @@ describe('Feature: Change date conference', () => {
     let useCase: ChangeDates;
     let repository: InMemoryConferenceRespository;
     let dateGenerator:FixedDateGenerator ;
+    let bookingRepository: InMemoryBookingRepository
+    let mailer: InMemoryMailer;
+    let userRepository: InMemoryUsersRepository;
 
     beforeEach(async () => {
         repository = new InMemoryConferenceRespository();
         await repository.create(testConference.conference1);
 
         dateGenerator = new FixedDateGenerator();
+        bookingRepository = new InMemoryBookingRepository();
+        await bookingRepository.create(testBooking.bobBooking)
+        await bookingRepository.create(testBooking.aliceBooking)
 
-        useCase = new ChangeDates(repository, dateGenerator);
+        mailer = new InMemoryMailer();
+        userRepository = new InMemoryUsersRepository();
+        await userRepository.create(testUser.bob);
+        await userRepository.create(testUser.alice);
+
+        useCase = new ChangeDates(
+            repository,
+            dateGenerator,
+            bookingRepository,
+            mailer,
+            userRepository
+        );
     })
 
     describe('Scenario: Happy path', () => {
@@ -43,6 +64,21 @@ describe('Feature: Change date conference', () => {
             expect(fetchedConference!.props.startDate).toEqual(startDate);
             expect(fetchedConference!.props.endDate).toEqual(endDate);
         });
+        it('Should send an email to participants', async() => {
+            await useCase.execute(payload)
+            expect(mailer.sendEmails).toEqual([{
+                from: 'TEDx conference',
+                to: testUser.bob.props.emailAddress,
+                subject: `The date of the conference: ${testConference.conference1.props.title} has been changed`,
+                body: `The date of the conference: ${testConference.conference1.props.title} has been changed`,
+            },
+                {
+                    from: 'TEDx conference',
+                    to: testUser.alice.props.emailAddress,
+                    subject: `The date of the conference: ${testConference.conference1.props.title} has been changed`,
+                    body: `The date of the conference: ${testConference.conference1.props.title} has been changed`,
+                }])
+        })
     })
 
     describe("Scenario: the conference does not exist", () => {
