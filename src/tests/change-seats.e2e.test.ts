@@ -23,6 +23,10 @@ describe('Feature: change the number of seats', () => {
         app = testApp.expressApp
     })
 
+    afterAll(async() => {
+        await testApp.tearDown()
+    })
+
     describe("Scenario: Happy path", () => {
         it('Should change the number of seats', async () => {
             const seats = 100;

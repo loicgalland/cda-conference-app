@@ -5,6 +5,7 @@ import {errorHandler} from "../../infrastructure/express_api/middlewares/error-h
 import {IFixture} from "../fixtures/fixture.interface";
 import {AwilixContainer} from "awilix";
 import container from "../../infrastructure/express_api/config/dependency-injection";
+import mongoose from "mongoose";
 
 export class TestApp {
     private app: express.Application;
@@ -15,6 +16,7 @@ export class TestApp {
     }
 
     async setup() {
+        await mongoose.connect("mongodb://admin:azerty@localhost:3702/conferences?authSource=admin");
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(jsonResponseMiddleware);
@@ -24,6 +26,10 @@ export class TestApp {
 
     async loadAllFixture(fixtures: IFixture[]){
         return Promise.all(fixtures.map(fixture => fixture.load(this.container)))
+    }
+
+    async tearDown(){
+        await mongoose.connection.close();
     }
 
     get expressApp(){
