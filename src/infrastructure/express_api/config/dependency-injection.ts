@@ -11,6 +11,11 @@ import {IConferenceRepository} from "../../../conference/ports/conference-reposi
 import {ChangeSeats} from "../../../conference/usecases/change-seats";
 import {MongoUserRepository} from "../../../user/adapters/mongo/mongo-user-repository";
 import {MongoUser} from "../../../user/adapters/mongo/mongo-user";
+import {InMemoryBookingRepository} from "../../../conference/adapters/in-memory-booking-repository";
+import {IBookingRepository} from "../../../conference/ports/booking-respository-interface";
+import {ChangeDates} from "../../../conference/usecases/change-date";
+import {InMemoryMailer} from "../../../core/adapters/in-memory-mailer";
+import {IMailer} from "../../../core/ports/mail.interface";
 
 const container = createContainer();
 
@@ -19,18 +24,23 @@ container.register({
     idGenerator: asClass(RandomIdGenerator).singleton(),
     dateGenerator: asClass(CurrentDateGenerator).singleton(),
     userRepository: asValue(new MongoUserRepository(MongoUser.UserModel)),
+    bookingRepository: asClass(InMemoryBookingRepository).singleton(),
+    mailerRepository: asClass(InMemoryMailer).singleton()
 })
 
 const conferenceRepository = container.resolve('conferenceRepository') as IConferenceRepository;
 const idGenerator = container.resolve('idGenerator') as IIdGenerator
 const dateGenerator = container.resolve('dateGenerator') as IDateGenerator
 const userRepository = container.resolve('userRepository') as IUserRepository
+const bookingRepository = container.resolve('bookingRepository') as IBookingRepository
+const mailerRepository = container.resolve('mailerRepository') as IMailer
 
 container.register({
     organizeConference: asValue(new OrganizeConference(
         conferenceRepository, idGenerator, dateGenerator
     )),
     changeSeats: asValue(new ChangeSeats(conferenceRepository)),
+    changeDates: asValue(new ChangeDates(conferenceRepository, dateGenerator, bookingRepository, mailerRepository, userRepository)),
     authenticator: asValue(new BasicAuthenticator(userRepository))
 })
 

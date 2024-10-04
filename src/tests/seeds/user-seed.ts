@@ -8,4 +8,14 @@ export const e2eUser = {
         emailAddress: 'johndoe@gmail.com',
         password: 'azerty',
     })),
+    bob: new UserFixture(new User({
+        id: "bod",
+        emailAddress: "bob@gmail.com",
+        password: "azety"
+    })),
+    alice: new UserFixture(new User({
+        id: "alice",
+        emailAddress: "alice@gmail.com",
+        password: "azety"
+    }))
 }

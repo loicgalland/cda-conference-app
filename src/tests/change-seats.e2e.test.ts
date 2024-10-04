@@ -1,5 +1,4 @@
 import request from 'supertest';
-import {addDays, addHours} from "date-fns";
 import container from "../infrastructure/express_api/config/dependency-injection";
 import {IConferenceRepository} from "../conference/ports/conference-repository.interface";
 import {TestApp} from "../tests/utils/test-app";
