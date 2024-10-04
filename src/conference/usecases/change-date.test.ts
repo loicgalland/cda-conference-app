@@ -60,7 +60,6 @@ describe('Feature: Change date conference', () => {
         it('Should change the dates', async () => {
             await useCase.execute(payload)
             const fetchedConference = await repository.findById(testConference.conference1.props.id);
-
             expect(fetchedConference!.props.startDate).toEqual(startDate);
             expect(fetchedConference!.props.endDate).toEqual(endDate);
         });

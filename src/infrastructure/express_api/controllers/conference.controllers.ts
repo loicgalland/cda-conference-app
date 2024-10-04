@@ -25,8 +25,8 @@ export const organizeConference = (container: AwilixContainer) => {
             const result = await container.resolve('organizeConference').execute({
                 user: req.user as User,
                 title: input.title,
-                startDate: input.startDate,
-                endDate: input.endDate,
+                startDate: new Date(input.startDate),
+                endDate: new Date(input.endDate),
                 seats: input.seats,
             });
             return res.jsonSuccess({id: result.id}, 201)
@@ -73,8 +73,8 @@ export const changeDate = (container: AwilixContainer) => {
             await container.resolve('changeDates').execute({
                 user: req.user,
                 conferenceId: id,
-                startDate: input.startDate,
-                endDate: input.endDate,
+                startDate: new Date(input.startDate),
+                endDate: new Date(input.endDate),
             })
             return res.jsonSuccess({message: 'The date was changed correctly'}, 200)
         } catch(error) {

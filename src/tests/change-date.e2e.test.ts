@@ -44,7 +44,10 @@ describe('Feature: Change the conference date', () => {
             const result = await request(app)
                 .patch(`/conference/date/${id}`)
                 .set('Authorization', e2eUser.johnDoe.createAuthorizationToken())
-                .send({startDate, endDate})
+                .send({
+                    startDate: new Date(startDate),
+                    endDate: new Date(endDate),
+                })
 
             expect(result.status).toBe(200);
 
@@ -52,8 +55,8 @@ describe('Feature: Change the conference date', () => {
             const fetchedConference = await conferenceRepository.findById(id);
 
             expect(fetchedConference).toBeDefined();
-            expect(fetchedConference?.props.startDate).toEqual(startDate.toISOString())
-            expect(fetchedConference?.props.endDate).toEqual(endDate.toISOString())
+            expect(fetchedConference?.props.startDate).toEqual(startDate)
+            expect(fetchedConference?.props.endDate).toEqual(endDate)
         })
 
 

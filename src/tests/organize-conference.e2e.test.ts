@@ -32,8 +32,8 @@ describe('Feature: Organize conference', () => {
             .send({
                 title: 'My first conference',
                 seats: 100,
-                startDate: startDate.toISOString(),
-                endDate: endDate.toISOString(),
+                startDate: startDate,
+                endDate: endDate,
             });
 
         expect(result.status).toBe(201);
@@ -48,8 +48,8 @@ describe('Feature: Organize conference', () => {
             organizerId: e2eUser.johnDoe.entity.props.id,
             title: 'My first conference',
             seats: 100,
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
+            startDate: startDate,
+            endDate: endDate,
         })
     })
 })
