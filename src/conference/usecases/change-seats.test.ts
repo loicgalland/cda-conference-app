@@ -2,22 +2,23 @@ import {ChangeSeats} from "../../conference/usecases/change-seats";
 import {InMemoryConferenceRespository} from "../../conference/adapters/in-memory-conference-repository";
 import {testConference} from "../../conference/tests/conference-seeds";
 import {testUser} from "../../user/tests/user-seeds";
+import {InMemoryBookingRepository} from "../../conference/adapters/in-memory-booking-repository";
 
 describe('Feature change the seats number', () => {
     async function expectSeatsUnchanged(){
         const fetchedConference = await repository.findById(testConference.conference1.props.id)
         expect(fetchedConference?.props.seats).toEqual(50)
     }
-
-
-
+    let bookingRepository: InMemoryBookingRepository;
     let repository:InMemoryConferenceRespository;
     let useCase: ChangeSeats;
 
     beforeEach(async () =>{
         repository = new InMemoryConferenceRespository();
+        bookingRepository = new InMemoryBookingRepository();
+        // add the creation of all the booking in db
         await repository.create(testConference.conference1);
-        useCase = new ChangeSeats(repository);
+        useCase = new ChangeSeats(repository, bookingRepository);
     })
 
     describe('Scenario: Happy path', () => {
@@ -75,5 +76,18 @@ describe('Feature change the seats number', () => {
 
             await expectSeatsUnchanged();
         })
+    })
+
+    describe('Scenario: number of booking > number seat', () => {
+        it('Should fail', async() => {
+            await expect(useCase.execute({
+                user: testUser.johnDoe,
+                conferenceId: testConference.conference1.props.id,
+                seats: 25,
+            })).rejects.toThrow('The conference already has too much booking');
+
+            await expectSeatsUnchanged();
+        })
+
     })
 })

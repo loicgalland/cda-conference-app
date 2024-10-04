@@ -42,7 +42,7 @@ container.register({
     organizeConference: asValue(new OrganizeConference(
         conferenceRepository, idGenerator, dateGenerator
     )),
-    changeSeats: asValue(new ChangeSeats(conferenceRepository)),
+    changeSeats: asValue(new ChangeSeats(conferenceRepository, bookingRepository)),
     changeDates: asValue(new ChangeDates(conferenceRepository, dateGenerator, bookingRepository, mailerRepository, userRepository)),
     authenticator: asValue(new BasicAuthenticator(userRepository)),
     bookSeat: asValue(new BookSeat(bookingRepository)),

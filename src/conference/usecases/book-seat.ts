@@ -23,6 +23,8 @@ export class BookSeat implements Executable<RequestBookSeat, ResponseBookSeat> {
         }
 
 
+
+
         const newBooking = new Booking({
             conferenceId,
             userId

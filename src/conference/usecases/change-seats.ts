@@ -3,6 +3,7 @@ import {IConferenceRepository} from "../../conference/ports/conference-repositor
 import {Executable} from "../../core/executable.interface";
 import {ConferenceNotFoundException} from "../../conference/exceptions/conference-not-found";
 import {ConferenceUpdateForbiddenException} from "../../conference/exceptions/conference-update-forbidden";
+import {IBookingRepository} from "../../conference/ports/booking-respository-interface";
 
 type RequestChangeSeats = {
     user: User,
@@ -13,7 +14,10 @@ type ResponseChangeSeats = void
 
 
 export class ChangeSeats implements Executable<RequestChangeSeats, ResponseChangeSeats> {
-    constructor(private readonly repository: IConferenceRepository) {}
+    constructor(
+        private readonly repository: IConferenceRepository,
+        private readonly bookingRepository: IBookingRepository
+    ) {}
 
     async execute({user, conferenceId, seats}){
         const conference = await this.repository.findById(conferenceId);
@@ -26,6 +30,12 @@ export class ChangeSeats implements Executable<RequestChangeSeats, ResponseChang
         if(conference.hasNotEnoughSeat() || conference.hasTooManySeats()){
             throw new Error('The conference must have a maximum of 1000 seat and at least 20 seats')
         }
+
+        // condition to check if the is more booking than seats
+        // const bookings = await this.bookingRepository.findByConferenceId(conferenceId);
+        //
+        // console.log(bookings)
+        // if(bookings.length < seats) throw new Error("The conference already has too much booking")
 
         await this.repository.update(conference);
     }
