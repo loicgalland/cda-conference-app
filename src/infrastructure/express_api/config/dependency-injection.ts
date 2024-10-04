@@ -18,6 +18,7 @@ import {InMemoryMailer} from "../../../core/adapters/in-memory-mailer";
 import {IMailer} from "../../../core/ports/mail.interface";
 import {MongoConferenceRepository} from "../../../conference/adapters/mongo/mongo-conference-repository";
 import {MongoConference} from "../../../conference/adapters/mongo/mongo-conference";
+import {BookSeat} from "../../../conference/usecases/book-seat";
 
 const container = createContainer();
 
@@ -43,7 +44,8 @@ container.register({
     )),
     changeSeats: asValue(new ChangeSeats(conferenceRepository)),
     changeDates: asValue(new ChangeDates(conferenceRepository, dateGenerator, bookingRepository, mailerRepository, userRepository)),
-    authenticator: asValue(new BasicAuthenticator(userRepository))
+    authenticator: asValue(new BasicAuthenticator(userRepository)),
+    bookSeat: asValue(new BookSeat(bookingRepository)),
 })
 
 export default container;

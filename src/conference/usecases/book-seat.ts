@@ -15,12 +15,19 @@ export class BookSeat implements Executable<RequestBookSeat, ResponseBookSeat> {
     constructor(private readonly repository: IBookingRepository) {}
 
     async execute({conferenceId, userId}){
+
+        const existingBooking = await this.repository.findByConferenceIdAndUserId(userId, conferenceId);
+
+        if (existingBooking) {
+            throw new Error('This user already booked a seat for this conference');
+        }
+
+
         const newBooking = new Booking({
             conferenceId,
             userId
         })
 
-        console.log(conferenceId, userId)
         await this.repository.create(newBooking)
     }
 }

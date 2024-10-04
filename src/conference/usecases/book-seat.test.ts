@@ -11,8 +11,8 @@ describe('Feature book a seat', () => {
     let useCase: BookSeat;
 
     beforeEach(async () => {
-
         bookingRepository = new InMemoryBookingRepository();
+        await bookingRepository.create(testBooking.bobBooking)
         useCase = new BookSeat(bookingRepository);
     })
 
@@ -26,10 +26,17 @@ describe('Feature book a seat', () => {
             await useCase.execute(payload)
             const bookings = await bookingRepository.findByConferenceId(payload.conferenceId);
 
-            expect(bookings.length).toBe(1);
-            expect(bookings[0].props.conferenceId).toBe(payload.conferenceId);
-            expect(bookings[0].props.userId).toBe(payload.userId);
+            expect(bookings.length).toBe(2);
         })
     })
-
+    describe('Scenario: The user already booked a seat for this conference', () => {
+        const payload = {
+            conferenceId: testConference.conference1.props.id,
+            userId: testUser.bob.props.id,
+        }
+        it('Should fail', async () => {
+            await expect(useCase.execute(payload)).rejects.toThrow('This user already booked a seat for this' +
+                ' conference');
+        })
+    })
 });

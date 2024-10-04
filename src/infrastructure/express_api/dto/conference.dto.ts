@@ -33,3 +33,13 @@ export class ChangeDateInput {
     @IsDateString()
     endDate: Date
 }
+
+export class BookSeatInput {
+    @IsNotEmpty()
+    @IsString()
+    conferenceId: string
+
+    @IsNotEmpty()
+    @IsString()
+    userId: string
+}

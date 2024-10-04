@@ -11,4 +11,10 @@ export class InMemoryBookingRepository implements IBookingRepository {
     async findByConferenceId(id: string): Promise<Booking[]> {
         return this.database.filter(booking => booking.props.conferenceId === id)
     }
+
+    async findByConferenceIdAndUserId(userId: string, conferenceId: string): Promise<Booking | null> {
+        return this.database.find(
+            booking => booking.props.userId === userId && booking.props.conferenceId === conferenceId
+        ) || null;
+    }
 }
