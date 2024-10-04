@@ -3,6 +3,7 @@ import {InMemoryConferenceRespository} from "../../conference/adapters/in-memory
 import {testConference} from "../../conference/tests/conference-seeds";
 import {testUser} from "../../user/tests/user-seeds";
 import {InMemoryBookingRepository} from "../../conference/adapters/in-memory-booking-repository";
+import {testBooking} from "../../conference/tests/booking-seeds";
 
 describe('Feature change the seats number', () => {
     async function expectSeatsUnchanged(){
@@ -17,6 +18,11 @@ describe('Feature change the seats number', () => {
         repository = new InMemoryConferenceRespository();
         bookingRepository = new InMemoryBookingRepository();
         // add the creation of all the booking in db
+
+        for (const booking of testBooking.bookings) {
+            await bookingRepository.create(booking);
+        }
+
         await repository.create(testConference.conference1);
         useCase = new ChangeSeats(repository, bookingRepository);
     })

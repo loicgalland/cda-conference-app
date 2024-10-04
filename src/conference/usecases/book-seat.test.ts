@@ -3,7 +3,6 @@ import {testConference} from "../../conference/tests/conference-seeds";
 import {testBooking} from "../../conference/tests/booking-seeds";
 import {testUser} from "../../user/tests/user-seeds";
 import {BookSeat} from "../../conference/usecases/book-seat";
-import {Booking} from "../../conference/entities/booking.entity";
 
 describe('Feature book a seat', () => {
 

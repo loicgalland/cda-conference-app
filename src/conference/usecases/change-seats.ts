@@ -31,11 +31,9 @@ export class ChangeSeats implements Executable<RequestChangeSeats, ResponseChang
             throw new Error('The conference must have a maximum of 1000 seat and at least 20 seats')
         }
 
-        // condition to check if the is more booking than seats
-        // const bookings = await this.bookingRepository.findByConferenceId(conferenceId);
-        //
-        // console.log(bookings)
-        // if(bookings.length < seats) throw new Error("The conference already has too much booking")
+        const bookings = await this.bookingRepository.findByConferenceId(conferenceId);
+
+        if(bookings.length > seats) throw new Error("The conference already has too much booking")
 
         await this.repository.update(conference);
     }
