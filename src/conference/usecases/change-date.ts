@@ -6,6 +6,8 @@ import {IBookingRepository} from "../../conference/ports/booking-respository-int
 import {IMailer} from "../../core/ports/mail.interface";
 import {IUserRepository} from "../../user/ports/user-repository.interface";
 import {Conference} from "../../conference/entities/conference.entity";
+import {ConferenceNotFoundException} from "../../conference/exceptions/conference-not-found";
+import {ConferenceUpdateForbiddenException} from "../../conference/exceptions/conference-update-forbidden";
 
 type RequestChangeDate = {
     user: User,
@@ -29,10 +31,10 @@ export class ChangeDates implements Executable<RequestChangeDate, ResponseChange
     async execute({user, conferenceId, startDate, endDate}: RequestChangeDate) {
         const conference = await this.repository.findById(conferenceId)
 
-        if(!conference) throw new Error('Conference not found');
+        if(!conference) throw new ConferenceNotFoundException();
 
         if(conference.props.organizerId !== user.props.id) {
-            throw new Error('You are not allowed to update this conference')
+            throw new ConferenceUpdateForbiddenException()
         }
 
         conference.update({
